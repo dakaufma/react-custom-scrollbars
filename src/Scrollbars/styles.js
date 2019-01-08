@@ -28,6 +28,7 @@ export const viewStyleMobile = {
     left: 0,
     right: 0,
     bottom: 0,
+    paddingRight: '8px',
     overflow: 'auto',
     overflowX: 'hidden',
     overflowY: 'auto',

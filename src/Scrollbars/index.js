@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import isString from '../utils/isString';
 import getScrollbarWidth from '../utils/getScrollbarWidth';
+import isScrollbarRequired from '../utils/isScrollbarRequired';
 import returnFalse from '../utils/returnFalse';
 import getInnerWidth from '../utils/getInnerWidth';
 import getInnerHeight from '../utils/getInnerHeight';
@@ -525,7 +526,7 @@ export default class Scrollbars extends Component {
             ...style
         };
 
-        const baseViewStyle = scrollbarWidth ? viewStyleDefault : viewStyleMobile;
+        const baseViewStyle = isScrollbarRequired() ? viewStyleDefault : viewStyleMobile;
 
         const viewStyle = {
             ...baseViewStyle,
