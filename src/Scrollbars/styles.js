@@ -17,6 +17,20 @@ export const viewStyleDefault = {
     right: 0,
     bottom: 0,
     overflow: 'scroll',
+    overflowX: 'hidden',
+    overflowY: 'scroll',
+    WebkitOverflowScrolling: 'touch'
+};
+
+export const viewStyleMobile = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'auto',
+    overflowX: 'hidden',
+    overflowY: 'auto',
     WebkitOverflowScrolling: 'touch'
 };
 
