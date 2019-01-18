@@ -225,7 +225,9 @@ export default class Scrollbars extends Component {
         trackVertical.addEventListener('mouseleave', this.handleTrackMouseLeave);
         trackVertical.addEventListener('mousedown', this.handleVerticalTrackMouseDown);
         thumbHorizontal.addEventListener('mousedown', this.handleHorizontalThumbMouseDown);
+        thumbHorizontal.addEventListener('touchstart', this.handleHorizontalThumbMouseDown);
         thumbVertical.addEventListener('mousedown', this.handleVerticalThumbMouseDown);
+        thumbVertical.addEventListener('touchstart', this.handleVerticalThumbMouseDown);
         window.addEventListener('resize', this.handleWindowResize);
     }
 
@@ -242,7 +244,9 @@ export default class Scrollbars extends Component {
         trackVertical.removeEventListener('mouseleave', this.handleTrackMouseLeave);
         trackVertical.removeEventListener('mousedown', this.handleVerticalTrackMouseDown);
         thumbHorizontal.removeEventListener('mousedown', this.handleHorizontalThumbMouseDown);
+        thumbHorizontal.removeEventListener('touchstart', this.handleHorizontalThumbMouseDown);
         thumbVertical.removeEventListener('mousedown', this.handleVerticalThumbMouseDown);
+        thumbVertical.removeEventListener('touchstart', this.handleVerticalThumbMouseDown);
         window.removeEventListener('resize', this.handleWindowResize);
         // Possibly setup by `handleDragStart`
         this.teardownDragging();
@@ -290,51 +294,59 @@ export default class Scrollbars extends Component {
 
     handleHorizontalTrackMouseDown(event) {
         event.preventDefault();
-        const { target, clientX } = event;
+        const { target, touches, clientX } = event;
         const { left: targetLeft } = target.getBoundingClientRect();
         const thumbWidth = this.getThumbHorizontalWidth();
-        const offset = Math.abs(targetLeft - clientX) - thumbWidth / 2;
+        const X = touches ? touches[0].clientX : clientX;
+        const offset = Math.abs(targetLeft - X) - thumbWidth / 2;
         this.view.scrollLeft = this.getScrollLeftForOffset(offset);
     }
 
     handleVerticalTrackMouseDown(event) {
         event.preventDefault();
-        const { target, clientY } = event;
+        const { target, touches, clientY } = event;
         const { top: targetTop } = target.getBoundingClientRect();
         const thumbHeight = this.getThumbVerticalHeight();
-        const offset = Math.abs(targetTop - clientY) - thumbHeight / 2;
+        const Y = touches ? touches[0].clientY : clientY;
+        const offset = Math.abs(targetTop - Y) - thumbHeight / 2;
         this.view.scrollTop = this.getScrollTopForOffset(offset);
     }
 
     handleHorizontalThumbMouseDown(event) {
         event.preventDefault();
         this.handleDragStart(event);
-        const { target, clientX } = event;
+        const { target, touches, clientX } = event;
         const { offsetWidth } = target;
         const { left } = target.getBoundingClientRect();
-        this.prevPageX = offsetWidth - (clientX - left);
+        const X = touches ? touches[0].clientX : clientX;
+        this.prevPageX = offsetWidth - (X - left);
     }
 
     handleVerticalThumbMouseDown(event) {
         event.preventDefault();
         this.handleDragStart(event);
-        const { target, clientY } = event;
+        const { target, touches, clientY } = event;
         const { offsetHeight } = target;
         const { top } = target.getBoundingClientRect();
-        this.prevPageY = offsetHeight - (clientY - top);
+        const Y = touches ? touches[0].clientY : clientY;
+        this.prevPageY = offsetHeight - (Y - top);
     }
 
     setupDragging() {
         css(document.body, disableSelectStyle);
         document.addEventListener('mousemove', this.handleDrag);
+        document.addEventListener('touchmove', this.handleDrag);
         document.addEventListener('mouseup', this.handleDragEnd);
+        document.addEventListener('touchend', this.handleDragEnd);
         document.onselectstart = returnFalse;
     }
 
     teardownDragging() {
         css(document.body, disableSelectStyleReset);
         document.removeEventListener('mousemove', this.handleDrag);
+        document.removeEventListener('touchmovemove', this.handleDrag);
         document.removeEventListener('mouseup', this.handleDragEnd);
+        document.removeEventListener('touchend', this.handleDragEnd);
         document.onselectstart = undefined;
     }
 
@@ -346,19 +358,21 @@ export default class Scrollbars extends Component {
 
     handleDrag(event) {
         if (this.prevPageX) {
-            const { clientX } = event;
+            const { touches, clientX } = event;
             const { left: trackLeft } = this.trackHorizontal.getBoundingClientRect();
             const thumbWidth = this.getThumbHorizontalWidth();
             const clickPosition = thumbWidth - this.prevPageX;
-            const offset = -trackLeft + clientX - clickPosition;
+            const X = touches ? touches[0].clientX : clientX;
+            const offset = -trackLeft + X - clickPosition;
             this.view.scrollLeft = this.getScrollLeftForOffset(offset);
         }
         if (this.prevPageY) {
-            const { clientY } = event;
+            const { touches, clientY } = event;
             const { top: trackTop } = this.trackVertical.getBoundingClientRect();
             const thumbHeight = this.getThumbVerticalHeight();
             const clickPosition = thumbHeight - this.prevPageY;
-            const offset = -trackTop + clientY - clickPosition;
+            const Y = touches ? touches[0].clientY : clientY;
+            const offset = -trackTop + Y - clickPosition;
             this.view.scrollTop = this.getScrollTopForOffset(offset);
         }
         return false;
