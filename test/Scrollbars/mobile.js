@@ -1,7 +1,6 @@
 import { Scrollbars } from 'react-custom-scrollbars';
 import { render, unmountComponentAtNode } from 'react-dom';
 import React from 'react';
-import { MOBILE_SCROLLBAR_WIDTH as scrollbarWidth } from '../../src/utils/getScrollbarWidth';
 export default function createTests(envScrollbarWidth) {
     let node;
     beforeEach(() => {
@@ -24,8 +23,8 @@ export default function createTests(envScrollbarWidth) {
                 setTimeout(() => {
                     const { view } = this;
                     expect(view.style.overflow).toEqual('scroll');
-                    expect(view.style.marginBottom).toEqual(`${-scrollbarWidth}px`);
-                    expect(view.style.marginRight).toEqual(`${-scrollbarWidth}px`);
+                    expect(view.style.marginBottom).toEqual('0px');
+                    expect(view.style.marginRight).toEqual('0px');
                     done();
                 }, 100);
             });

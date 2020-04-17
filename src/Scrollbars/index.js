@@ -4,7 +4,7 @@ import { Component, createElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 
 import isString from '../utils/isString';
-import getScrollbarWidth, { isForcedMobile } from '../utils/getScrollbarWidth';
+import getScrollbarWidth from '../utils/getScrollbarWidth';
 import returnFalse from '../utils/returnFalse';
 import getInnerWidth from '../utils/getInnerWidth';
 import getInnerHeight from '../utils/getInnerHeight';
@@ -13,7 +13,6 @@ import {
     containerStyleDefault,
     containerStyleAutoHeight,
     viewStyleDefault,
-    viewStyleMobile,
     viewStyleAutoHeight,
     viewStyleUniversalInitial,
     trackHorizontalStyleDefault,
@@ -528,13 +527,14 @@ export default class Scrollbars extends Component {
             ...style
         };
 
-        const baseViewStyle = isForcedMobile(mobile) ? viewStyleMobile : viewStyleDefault;
+        // use the true scrollbar width (without any forceMobile hacks) for hiding the true scrollbar
+        const trueScrollbarWidth = getScrollbarWidth(false);
 
         const viewStyle = {
-            ...baseViewStyle,
+            ...viewStyleDefault,
             // Hide scrollbars by setting a negative margin
-            marginRight: scrollbarWidth ? -scrollbarWidth : 0,
-            marginBottom: scrollbarWidth ? -scrollbarWidth : 0,
+            marginRight: -trueScrollbarWidth,
+            marginBottom: -trueScrollbarWidth,
             ...(autoHeight && {
                 ...viewStyleAutoHeight,
                 // Add scrollbarWidth to autoHeight in order to compensate negative margins
