@@ -37,6 +37,7 @@
   * When `true` container grows with content
 * `autoHeightMin`: (Number) Set a minimum height for auto-height mode (default: 0)
 * `autoHeightMax`: (Number) Set a maximum height for auto-height mode (default: 200)
+- mobile: (Boolean) Enable to force custom scrollbars on mobile (instead of native)
 * `universal`: (Boolean) Enable universal rendering (default: `false`)
     * [Learn how to use universal rendering](#link)
 

@@ -6,7 +6,7 @@ react-custom-scrollbars
 [![npm downloads](https://img.shields.io/npm/dm/react-custom-scrollbars.svg?style=flat-square)](https://www.npmjs.com/package/react-custom-scrollbars)
 
 * frictionless native browser scrolling
-* native scrollbars for mobile devices
+* native scrollbars for mobile devices (can be disabled)
 * [fully customizable](https://github.com/malte-wessel/react-custom-scrollbars/blob/master/docs/customization.md)
 * [auto hide](https://github.com/malte-wessel/react-custom-scrollbars/blob/master/docs/usage.md#auto-hide)
 * [auto height](https://github.com/malte-wessel/react-custom-scrollbars/blob/master/docs/usage.md#auto-height)
@@ -69,6 +69,7 @@ class CustomScrollbars extends Component {
         autoHeight
         autoHeightMin={0}
         autoHeightMax={200}
+        mobile
         thumbMinSize={30}
         universal={true}
         {...this.props}>
